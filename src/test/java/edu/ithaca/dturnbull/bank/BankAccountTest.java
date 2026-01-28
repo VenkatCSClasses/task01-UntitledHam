@@ -24,10 +24,8 @@ class BankAccountTest {
 
     @Test
     void isEmailValidTest(){
-        assertTrue(BankAccount.isEmailValid( "a@b.com"));   // valid email address
-        assertFalse( BankAccount.isEmailValid(""));         // empty string
-
-        
+        assertTrue(BankAccount.isEmailValid( "a@b.com")); // valid email address
+        assertFalse(BankAccount.isEmailValid("")); // empty string
     }
 
     @Test
@@ -37,7 +35,7 @@ class BankAccountTest {
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance(), 0.001);
         //check for exception thrown correctly
-        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 100));
     }
 
 }
