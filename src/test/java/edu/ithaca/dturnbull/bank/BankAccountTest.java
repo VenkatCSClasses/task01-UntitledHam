@@ -26,38 +26,38 @@ class BankAccountTest {
     void isEmailValidTest(){
         assertTrue(BankAccount.isEmailValid( "a@b.com")); // valid email address
 
-        assertTrue(BankAccount.isEmailValid("abc-d@mail.com"));
-        assertTrue(BankAccount.isEmailValid("abc.def@mail.com"));
-        assertTrue(BankAccount.isEmailValid("abc.def@mail.com"));
-        assertTrue(BankAccount.isEmailValid("abc_def@mail.com"));
+        assertTrue(BankAccount.isEmailValid("abc-d@mail.com")); // valid email, not border
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.com")); //  valid email where local part contains -, not border
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.com")); // same as above
+        assertTrue(BankAccount.isEmailValid("abc_def@mail.com")); // valid email where local part contains _, not border
 
-        assertTrue(BankAccount.isEmailValid("abc.def@mail.cc"));
-        assertTrue(BankAccount.isEmailValid("abc.def@mail-archive.com"));
-        assertTrue(BankAccount.isEmailValid("abc.def@mail.org"));
-        assertTrue(BankAccount.isEmailValid("abc.def@mail.com"));
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.cc")); // valid email with a two letter domain, yes border case
+        assertTrue(BankAccount.isEmailValid("abc.def@mail-archive.com")); // valid email with - in domain, not border
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.org")); // valid email with .org domain, not border
+        assertTrue(BankAccount.isEmailValid("abc.def@mail.com")); // valid email with .com domain, not border
 
 
         assertFalse(BankAccount.isEmailValid("")); // empty string
 
-        assertFalse(BankAccount.isEmailValid("test"));
-        assertFalse(BankAccount.isEmailValid("test@em@ail.com"));
-        assertFalse(BankAccount.isEmailValid("test.email@com"));
-        assertFalse(BankAccount.isEmailValid("@."));
-        assertFalse(BankAccount.isEmailValid("@test.com"));
-        assertFalse(BankAccount.isEmailValid("test@email."));
-        assertFalse(BankAccount.isEmailValid("test@.com"));
+        assertFalse(BankAccount.isEmailValid("test")); // invalid missing @ and domain, yes border
+        assertFalse(BankAccount.isEmailValid("test@em@ail.com")); // invalid multiple @ symbols, yes border
+        assertFalse(BankAccount.isEmailValid("test.email@com")); // invalid missing domain dot, yes border
+        assertFalse(BankAccount.isEmailValid("@.")); // invalid missing local and domain name, yes border
+        assertFalse(BankAccount.isEmailValid("@test.com")); // invalid missing local name, yes border
+        assertFalse(BankAccount.isEmailValid("test@email.")); // invalid missing .com name, yes border
+        assertFalse(BankAccount.isEmailValid("test@.com")); // invalid missing domain name, yes border
 
 
-        assertFalse(BankAccount.isEmailValid("abc-@mail.com"));
-        assertFalse(BankAccount.isEmailValid("abc..def@mail.com"));
-        assertFalse(BankAccount.isEmailValid(".abc@mail.com"));
-        assertFalse(BankAccount.isEmailValid("abc#def@mail.com")); 
+        assertFalse(BankAccount.isEmailValid("abc-@mail.com")); // local part ends with -, yes border
+        assertFalse(BankAccount.isEmailValid("abc..def@mail.com")); // local part has consecutive dots, yes border
+        assertFalse(BankAccount.isEmailValid(".abc@mail.com")); // local part starts with ., yes border
+        assertFalse(BankAccount.isEmailValid("abc#def@mail.com")); // local part has invalid character #, yes border
 
 
-        assertFalse(BankAccount.isEmailValid("abc.def@mail.c"));
-        assertFalse(BankAccount.isEmailValid("abc.def@mail#archive.com"));
-        assertFalse(BankAccount.isEmailValid("abc.def@mail"));
-        assertFalse(BankAccount.isEmailValid("abc.def@mail..com"));
+        assertFalse(BankAccount.isEmailValid("abc.def@mail.c")); // domain part has only one letter after dot, yes border
+        assertFalse(BankAccount.isEmailValid("abc.def@mail#archive.com")); // domain part has invalid character  of #, yes border
+        assertFalse(BankAccount.isEmailValid("abc.def@mail")); // domain part missing dot, yes border
+        assertFalse(BankAccount.isEmailValid("abc.def@mail..com")); // domain part has consecutive dots, yes border
         
     }
 
