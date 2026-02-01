@@ -28,8 +28,10 @@ public class BankAccount {
         return email;
     }
 
-    /**
-     * @post reduces the balance by amount if amount is non-negative and smaller than balance
+    /***
+     * Withdraws the given amount from the bank account.
+     * @param amount the amount of money to withdraw
+     * @throws InsufficientFundsException on withdrawing more than the bank account contains, or on withdrawing a negative amount. 
      */
     public void withdraw (double amount) throws InsufficientFundsException{
         if (amount <= balance){

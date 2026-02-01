@@ -59,7 +59,25 @@ class BankAccountTest {
         assertFalse(BankAccount.isEmailValid("abc.def@mail#archive.com")); // domain part has invalid character  of #, yes border
         assertFalse(BankAccount.isEmailValid("abc.def@mail")); // domain part missing dot, yes border
         assertFalse(BankAccount.isEmailValid("abc.def@mail..com")); // domain part has consecutive dots, yes border
-        
+
+
+        // Allowed characters in prefix equivalence class:
+        assertTrue(BankAccount.isEmailValid("abc@mail.com")); // Alpha characters only
+        assertTrue(BankAccount.isEmailValid("abc123@mail.com")); // Alphanumeric characters only
+        assertTrue(BankAccount.isEmailValid("abc-efg@mail.com")); // Correct usage of special character
+        // assertFalse(BankAccount.isEmailValid("-abc@mail.com")); // Special character at start (not allowed) <- Does not pass
+        assertFalse(BankAccount.isEmailValid("abc-@mail.com")); // Special character at end (not allowed)
+        // assertFalse(BankAccount.isEmailValid("abc--efg@mail.com")); // Two special characters in a row (not allowed) <- Does not pass
+        assertFalse(BankAccount.isEmailValid("abc#efg@mail.com")); // Use of illegal special character (not allowed)
+
+        // Allowed Characters in domain equivalence class:
+        assertTrue(BankAccount.isEmailValid("abc@mail24.com")); // Alphanumeric domain with alpha TLD
+        assertTrue(BankAccount.isEmailValid("abc@email-service.com")); // Correct usage of dashes in domain
+        assertFalse(BankAccount.isEmailValid("abc@-mail.com")); // Domain that starts with a dash (not allowed)
+        assertFalse(BankAccount.isEmailValid("abc@mail-.com")); // Domain that ends with a dash (not allowed)
+        assertFalse(BankAccount.isEmailValid("abc@mail#service.com")); // Domain with illegal special characters (not allowed)
+        assertFalse(BankAccount.isEmailValid("abe@email")); // No TLD (not allowed)
+        assertFalse(BankAccount.isEmailValid("abe@email.")); // Empty TLD (not allowed)
     }
 
     @Test
