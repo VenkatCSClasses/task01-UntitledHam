@@ -31,7 +31,8 @@ public class BankAccount {
     /***
      * Withdraws the given amount from the bank account.
      * @param amount the amount of money to withdraw
-     * @throws InsufficientFundsException on withdrawing more than the bank account contains, or on withdrawing a negative amount. 
+     * @throws InsufficientFundsException on withdrawing more than the bank account contains
+     * @throws IllegalArgumentException on withdrawing a negative amount
      */
     public void withdraw (double amount) throws InsufficientFundsException{
         if (amount <= balance){

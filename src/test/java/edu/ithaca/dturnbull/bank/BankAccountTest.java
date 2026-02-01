@@ -46,7 +46,7 @@ class BankAccountTest {
 
         // Equivalence class of invalid withdrawals where the amount is negative
         BankAccount negativeAmountAccount = new BankAccount("a@b.com", 75);
-        assertThrows(InsufficientFundsException.class, () -> negativeAmountAccount.withdraw(-20));
+        assertThrows(IllegalArgumentException.class, () -> negativeAmountAccount.withdraw(-20));
         assertEquals(75, negativeAmountAccount.getBalance(), 0.001); // negative withdrawal should not alter balance
     }
 
