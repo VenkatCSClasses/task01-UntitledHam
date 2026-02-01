@@ -93,9 +93,9 @@ class BankAccountTest {
         assertTrue(BankAccount.isEmailValid("abc@mail.com")); // Alpha characters only
         assertTrue(BankAccount.isEmailValid("abc123@mail.com")); // Alphanumeric characters only
         assertTrue(BankAccount.isEmailValid("abc-efg@mail.com")); // Correct usage of special character
-        // assertFalse(BankAccount.isEmailValid("-abc@mail.com")); // Special character at start (not allowed) <- Does not pass
+        assertFalse(BankAccount.isEmailValid("-abc@mail.com")); // Special character at start (not allowed)
         assertFalse(BankAccount.isEmailValid("abc-@mail.com")); // Special character at end (not allowed)
-        // assertFalse(BankAccount.isEmailValid("abc--efg@mail.com")); // Two special characters in a row (not allowed) <- Does not pass
+        assertFalse(BankAccount.isEmailValid("abc--efg@mail.com")); // Two special characters in a row (not allowed)
         assertFalse(BankAccount.isEmailValid("abc#efg@mail.com")); // Use of illegal special character (not allowed)
 
         // Allowed Characters in domain equivalence class:
