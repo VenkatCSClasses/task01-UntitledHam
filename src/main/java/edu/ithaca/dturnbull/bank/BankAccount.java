@@ -34,11 +34,14 @@ public class BankAccount {
      * @throws InsufficientFundsException on withdrawing more than the bank account contains
      * @throws IllegalArgumentException on withdrawing a negative amount
      */
-    public void withdraw (double amount) throws InsufficientFundsException{
-        if (amount <= balance){
-            balance -= amount;
+    public void withdraw(double amount) throws InsufficientFundsException {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Withdraw amount cannot be negative");
         }
-        else {
+
+        if (amount <= balance) {
+            balance -= amount;
+        } else {
             throw new InsufficientFundsException("Not enough money");
         }
     }
