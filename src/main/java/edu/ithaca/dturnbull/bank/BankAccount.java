@@ -48,25 +48,41 @@ public class BankAccount {
         if (email == null || email.isEmpty()) return false;
 
         int at = email.indexOf('@');
-        if (at <= 0 || at != email.lastIndexOf('@') || at == email.length() - 1) return false;
+        if (at <= 0) return false;
+        if (at != email.lastIndexOf('@')) return false;
+        if (at == email.length() - 1) return false;
 
         String local = email.substring(0, at);
         String domain = email.substring(at + 1);
 
-        if (local.startsWith(".") || local.endsWith("-") || local.contains("..")) return false;
+        char first = local.charAt(0);
+        char last = local.charAt(local.length() - 1);
 
+        if (first == '.' || first == '-' || first == '_') return false;
+        if (last == '.' || last == '-' || last == '_') return false;
+
+        boolean prevWasSpecial = false;
         for (int i = 0; i < local.length(); i++) {
             char c = local.charAt(i);
+
             if (!(Character.isLetterOrDigit(c) || c == '.' || c == '-' || c == '_')) return false;
+
+            boolean isSpecial = (c == '.' || c == '-' || c == '_');
+            if (isSpecial && prevWasSpecial) return false;
+            prevWasSpecial = isSpecial;
         }
 
-        if (!domain.contains(".") || domain.startsWith(".") || domain.endsWith(".") || domain.contains("..")) return false;
+        if (!domain.contains(".")) return false;
+        if (domain.startsWith(".") || domain.endsWith(".")) return false;
+        if (domain.contains("..")) return false;
 
         String[] parts = domain.split("\\.");
         if (parts.length < 2) return false;
 
         for (String part : parts) {
-            if (part.isEmpty() || part.startsWith("-") || part.endsWith("-")) return false;
+            if (part.isEmpty()) return false;
+            if (part.startsWith("-") || part.endsWith("-")) return false;
+
             for (int i = 0; i < part.length(); i++) {
                 char c = part.charAt(i);
                 if (!(Character.isLetterOrDigit(c) || c == '-')) return false;
@@ -81,6 +97,7 @@ public class BankAccount {
 
         return true;
     }
+
 
 
 }
