@@ -7,19 +7,47 @@ import static org.junit.jupiter.api.Assertions.*;
 class BankAccountTest {
 
     @Test
-    void getBalanceTest() {
-        BankAccount bankAccount = new BankAccount("a@b.com", 200);
+    void getBalanceTest() throws InsufficientFundsException {
+        // Equivalence class of normal balances
+        BankAccount positiveBalanceAccount = new BankAccount("a@b.com", 200);
+        assertEquals(200, positiveBalanceAccount.getBalance(), 0.001);
+        positiveBalanceAccount.withdraw(50);
+        assertEquals(150, positiveBalanceAccount.getBalance(), 0.001); 
 
-        assertEquals(200, bankAccount.getBalance(), 0.001);
+        // Equivalence class of zero balances
+        BankAccount zeroBalanceAccount = new BankAccount("zero@b.com", 0);
+        assertEquals(0, zeroBalanceAccount.getBalance(), 0.001); // zero starting balance
+        BankAccount drainedAccount = new BankAccount("drain@b.com", 75);
+        drainedAccount.withdraw(75); // withdraw everything
+        assertEquals(0, drainedAccount.getBalance(), 0.001); // balance reaches zero
+
+        // Equivalence class of max balances
+        BankAccount maxBalanceAccount = new BankAccount("max@b.com", Double.MAX_VALUE);
+        assertEquals(Double.MAX_VALUE, maxBalanceAccount.getBalance(), 0.001); // ensure getter handles max double
     }
 
     @Test
     void withdrawTest() throws InsufficientFundsException{
-        BankAccount bankAccount = new BankAccount("a@b.com", 200);
-        bankAccount.withdraw(100);
+        // Equivalence class of valid withdrawal amounts
+        BankAccount validAccount = new BankAccount("a@b.com", 200);
+        validAccount.withdraw(100); // standard withdrawal amount
+        assertEquals(100, validAccount.getBalance(), 0.001);
 
-        assertEquals(100, bankAccount.getBalance(), 0.001);
-        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300));
+        validAccount.withdraw(0); // withdrawing zero should be allowed and do nothing
+        assertEquals(100, validAccount.getBalance(), 0.001);
+
+        validAccount.withdraw(100); // withdrawing the entire remaining balance
+        assertEquals(0, validAccount.getBalance(), 0.001);
+
+        // Equivalence class of invalid withdrawals where the amount exceeds the balance
+        BankAccount overdraftAccount = new BankAccount("a@b.com", 150);
+        assertThrows(InsufficientFundsException.class, () -> overdraftAccount.withdraw(151));
+        assertEquals(150, overdraftAccount.getBalance(), 0.001); // balance should remain unchanged
+
+        // Equivalence class of invalid withdrawals where the amount is negative
+        BankAccount negativeAmountAccount = new BankAccount("a@b.com", 75);
+        assertThrows(InsufficientFundsException.class, () -> negativeAmountAccount.withdraw(-20));
+        assertEquals(75, negativeAmountAccount.getBalance(), 0.001); // negative withdrawal should not alter balance
     }
 
     @Test
