@@ -1,5 +1,6 @@
 package edu.ithaca.dturnbull.bank;
 
+import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
 public class BankAccount {
@@ -34,7 +35,7 @@ public class BankAccount {
      * @return a boolean indicating if the amount is valid or not
      */
     public static boolean isAmountValid(double amount) {
-        return false;
+        return Double.isFinite(amount) && amount > 0 && BigDecimal.valueOf(amount).scale() <= 2;
     }
 
     /***
