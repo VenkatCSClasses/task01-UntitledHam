@@ -143,12 +143,26 @@ class BankAccountTest {
 
     @Test
     void constructorTest() {
+        // Whole number amount equivalence class:
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance(), 0.001);
-        //check for exception thrown correctly
-        assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 100));
+
+
+        // Decimal amounts equivalence class:
+        bankAccount = new BankAccount("a@b.com", 200.1); // 1 Decimal Places
+        assertEquals(200.1, bankAccount.getBalance(), 0.001); 
+        bankAccount = new BankAccount("a@b.com", 200.11); // 2 Decimals Places
+        assertEquals(200.11, bankAccount.getBalance(), 0.001);
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", 200.111)); // 3 Decimal Places (not allowed)
+
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 100)); // Empty email should error
+
+        // Negative amounts equivalence class:
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -100)); // Negative whole number (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -100.5)); // Negative 1 decimal place (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -100.55)); // Negative 2 decimal place (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -100.555)); // Negative 3 decimal place (not allowed)
     }
 
 }
