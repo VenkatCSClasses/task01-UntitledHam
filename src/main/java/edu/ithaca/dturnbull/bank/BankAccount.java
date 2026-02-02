@@ -1,7 +1,6 @@
 package edu.ithaca.dturnbull.bank;
 
 import java.math.BigDecimal;
-import java.util.regex.Pattern;
 
 public class BankAccount {
 
@@ -30,7 +29,7 @@ public class BankAccount {
     }
 
     /***
-     * Returns true if amount is positive and has less than 2 decimal places, otherwise returns false. 
+     * Returns true if amount is positive and has less than 2 decimal places and is a finite number, otherwise returns false. 
      * @param amount the amount of money to test
      * @return a boolean indicating if the amount is valid or not
      */
