@@ -108,6 +108,39 @@ class BankAccountTest {
         assertFalse(BankAccount.isEmailValid("abe@email.")); // Empty TLD (not allowed)
     }
 
+
+    @Test
+    void isAmountValidTest() {
+        // Positve amounts equivalence class:
+        assertTrue(BankAccount.isAmountValid(100)); // Positive whole number amount (border)
+        assertTrue(BankAccount.isAmountValid(50.5)); // Positive 1 decimal place amount
+        assertTrue(BankAccount.isAmountValid(50.55)); // Positive 2 decimal places amount (border)
+        assertFalse(BankAccount.isAmountValid(50.505)); // Positive 3 decimal places amount (not allowed)
+
+        // Negative amounts equivalence class:
+        assertFalse(BankAccount.isAmountValid(-100)); // Negative whole number amount (not allowed) (border)
+        assertFalse(BankAccount.isAmountValid(-10.1)); // Negative 2 decimal places amount (not allowed) (border)
+        assertFalse(BankAccount.isAmountValid(-10.11)); // Negative 2 decimal places amount (not allowed) (border)
+        assertFalse(BankAccount.isAmountValid(-10.111)); // Negative 3 decimal places amount (not allowed)
+
+        // Zero and near-zero amounts equivalence class:
+        assertFalse(BankAccount.isAmountValid(0)); // Zero is not positive (border)
+        assertTrue(BankAccount.isAmountValid(0.01)); // Smallest typical cent amount (border)
+
+        // Large but finite positive amount equivalence class:
+        assertTrue(BankAccount.isAmountValid(999999999.99)); // High magnitude with 2 decimals
+
+        // Boundry amounts equivalence class:
+        assertTrue(BankAccount.isAmountValid(Double.MAX_VALUE)); // The largest positve value
+        assertFalse(BankAccount.isAmountValid(Double.MIN_VALUE)); // The smallest possible decimal (not allowed)
+        assertFalse(BankAccount.isAmountValid(Double.NEGATIVE_INFINITY)); // The minimum negative value (not allowed)
+
+        // Non-finite and undefined values equivalence class:
+        assertFalse(BankAccount.isAmountValid(Double.POSITIVE_INFINITY)); // Infinite positive value (not allowed)
+        assertFalse(BankAccount.isAmountValid(Double.NaN)); // NAN should be rejected
+
+    }
+
     @Test
     void constructorTest() {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
