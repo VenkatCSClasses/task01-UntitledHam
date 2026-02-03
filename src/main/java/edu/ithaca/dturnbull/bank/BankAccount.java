@@ -8,9 +8,12 @@ public class BankAccount {
     private double balance;
 
     /**
-     * @throws IllegalArgumentException if email is invalid
+     * 
+     * @param email the email address for the account
+     * @param startingBalance the starting balance (must be postive and have less than or equal to 2 decimal places)
+     * @throws IllegalArgumentException if the email is invalid or if the starting balance is invalid (negative and/or 3 or more decimal places)
      */
-    public BankAccount(String email, double startingBalance){
+    public BankAccount(String email, double startingBalance) {
         if (isEmailValid(email)){
             this.email = email;
             this.balance = startingBalance;
@@ -41,7 +44,7 @@ public class BankAccount {
      * Withdraws the given amount from the bank account.
      * @param amount the amount of money to withdraw
      * @throws InsufficientFundsException on withdrawing more than the bank account contains
-     * @throws IllegalArgumentException on withdrawing a negative amount
+     * @throws IllegalArgumentException on withdrawing a negative amount, or an amount with more than 2 decimal places
      */
     public void withdraw(double amount) throws InsufficientFundsException {
         if (amount < 0) {
