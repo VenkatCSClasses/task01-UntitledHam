@@ -13,7 +13,7 @@ public class BankAccount {
      * @param startingBalance the starting balance (must be postive and have less than or equal to 2 decimal places)
      * @throws IllegalArgumentException if the email is invalid or if the starting balance is invalid (negative and/or 3 or more decimal places)
      */
-    public BankAccount(String email, double startingBalance) {
+    public BankAccount(String email, double startingBalance) throws IllegalArgumentException {
         if (!isEmailValid(email)){
             throw new IllegalArgumentException("Email address: " + email + " is invalid, cannot create account");
 
@@ -33,6 +33,27 @@ public class BankAccount {
     public String getEmail(){
         return email;
     }
+
+    /**
+     * Deposits the given amount into this bankaccount
+     * @param amount the amount of money to deposit into the account
+     * @throws IllegalArgumentException if the amount is less than or equal to 0 and/or contains more than 2 decimal places.
+     */
+    public void deposit(double amount) throws IllegalArgumentException {
+
+    }
+
+    /***
+     * Transfers the given amount from this account to the provided other account
+     * @param amount the amount to tranfer to the other account
+     * @param otherAccount the account to transfer the money to
+     * @throws IllegalArgumentException if the amount is less than or equal to 0 and/or contains more than 2 decimal places.
+     * @throws InsufficientFundsException if there is not enough money in the account to transfer
+     */
+    public void transfer(double amount, BankAccount otherAccount) throws IllegalArgumentException {
+
+    }
+
 
     /***
      * Returns true if amount is positive and has less than 2 decimal places and is a finite number, otherwise returns false. 

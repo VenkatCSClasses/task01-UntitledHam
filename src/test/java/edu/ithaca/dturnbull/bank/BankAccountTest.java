@@ -27,8 +27,6 @@ class BankAccountTest {
     }
 
 
-    
-
     @Test
     void withdrawTest() throws InsufficientFundsException {
         // Positive withdraws equivalence class:
