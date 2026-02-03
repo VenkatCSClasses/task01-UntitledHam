@@ -8,7 +8,7 @@ class BankAccountTest {
 
     @Test
     void getBalanceTest() throws InsufficientFundsException {
-        // Equivalence class of normal balances
+        // equivalence class of normal balances
         BankAccount positiveBalanceAccount = new BankAccount("a@b.com", 200);
         assertEquals(200, positiveBalanceAccount.getBalance(), 0.001);
         positiveBalanceAccount.withdraw(50);
@@ -26,28 +26,45 @@ class BankAccountTest {
         assertEquals(Double.MAX_VALUE, maxBalanceAccount.getBalance(), 0.001); // ensure getter handles max double
     }
 
+
+    
+
     @Test
-    void withdrawTest() throws InsufficientFundsException{
-        // Equivalence class of valid withdrawal amounts
-        BankAccount validAccount = new BankAccount("a@b.com", 200);
-        validAccount.withdraw(100); // standard withdrawal amount
-        assertEquals(100, validAccount.getBalance(), 0.001);
+    void withdrawTest() throws InsufficientFundsException {
+        // Positive withdraws equivalence class:
+        BankAccount bankAccount = new BankAccount("a@b.cc", 100); // Withdraw positive amount
+        bankAccount.withdraw(50);
+        assertEquals(50, bankAccount.getBalance());
+        
+        bankAccount = new BankAccount("a@b.cc", 100); // Withdraw positive 1 decimal amount
+        bankAccount.withdraw(50.5);
+        assertEquals(49.5, bankAccount.getBalance());
+    
+        bankAccount = new BankAccount("a@b.cc", 100); // Withdraw positive 2 decimal amount
+        bankAccount.withdraw(50.55);
+        assertEquals(49.45, bankAccount.getBalance());
 
-        validAccount.withdraw(0); // withdrawing zero should be allowed and do nothing
-        assertEquals(100, validAccount.getBalance(), 0.001);
+        BankAccount bankAccountThreeDecimal = new BankAccount("a@b.cc", 100); // Withdraw positive 3 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> bankAccountThreeDecimal.withdraw(50.555));
+          
+        // Negative withdraws equivalence class:
+        BankAccount bankAccountNegativeWhole = new BankAccount("a@b.cc", 100); // Withdraw negative amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> bankAccountNegativeWhole.withdraw(-50));
 
-        validAccount.withdraw(100); // withdrawing the entire remaining balance
-        assertEquals(0, validAccount.getBalance(), 0.001);
+        BankAccount bankAccountNegativeOneDecimal = new BankAccount("a@b.cc", 100); // Withdraw negative 1 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> bankAccountNegativeOneDecimal.withdraw(-50.1));
 
-        // Equivalence class of invalid withdrawals where the amount exceeds the balance
-        BankAccount overdraftAccount = new BankAccount("a@b.com", 150);
-        assertThrows(InsufficientFundsException.class, () -> overdraftAccount.withdraw(151));
-        assertEquals(150, overdraftAccount.getBalance(), 0.001); // balance should remain unchanged
+        BankAccount bankAccountNegativeTwoDecimal = new BankAccount("a@b.cc", 100); // Withdraw negative 2 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> bankAccountNegativeTwoDecimal.withdraw(-50.11));
 
-        // Equivalence class of invalid withdrawals where the amount is negative
-        BankAccount negativeAmountAccount = new BankAccount("a@b.com", 75);
-        assertThrows(IllegalArgumentException.class, () -> negativeAmountAccount.withdraw(-20));
-        assertEquals(75, negativeAmountAccount.getBalance(), 0.001); // negative withdrawal should not alter balance
+        BankAccount bankAccountNegativeThreeDecimal = new BankAccount("a@b.cc", 100); // Withdraw negative 3 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> bankAccountNegativeThreeDecimal.withdraw(-50.111));
+
+        // Withdrawing too much equivalence class:
+        BankAccount bankAccountOverdraft = new BankAccount("a@b.cc", 100); // Withdraw more than account has 
+        assertThrows(InsufficientFundsException.class, () -> bankAccountOverdraft.withdraw(200));
+
+
     }
 
     @Test
