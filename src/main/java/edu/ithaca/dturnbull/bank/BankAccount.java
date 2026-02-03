@@ -14,13 +14,16 @@ public class BankAccount {
      * @throws IllegalArgumentException if the email is invalid or if the starting balance is invalid (negative and/or 3 or more decimal places)
      */
     public BankAccount(String email, double startingBalance) {
-        if (isEmailValid(email)){
-            this.email = email;
-            this.balance = startingBalance;
-        }
-        else {
+        if (!isEmailValid(email)){
             throw new IllegalArgumentException("Email address: " + email + " is invalid, cannot create account");
+
         }
+        if (!isAmountValid(startingBalance)) {
+            throw new IllegalArgumentException("Starting balance: " + startingBalance + " is invalid, cannot create account");
+        }
+
+        this.email = email;
+        this.balance = startingBalance;
     }
 
     public double getBalance(){
@@ -47,8 +50,8 @@ public class BankAccount {
      * @throws IllegalArgumentException on withdrawing a negative amount, or an amount with more than 2 decimal places
      */
     public void withdraw(double amount) throws InsufficientFundsException {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Withdraw amount cannot be negative");
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException("Invalid withdraw amount: " + amount);
         }
 
         if (amount <= balance) {
