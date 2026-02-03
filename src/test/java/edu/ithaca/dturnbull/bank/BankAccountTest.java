@@ -64,7 +64,33 @@ class BankAccountTest {
         BankAccount bankAccountOverdraft = new BankAccount("a@b.cc", 100); // Withdraw more than account has 
         assertThrows(InsufficientFundsException.class, () -> bankAccountOverdraft.withdraw(200));
 
+        // Exact balance withdraw equivalence class:
+        BankAccount exactBalanceAccount = new BankAccount("exact@b.cc", 100); // Withdraw entire balance leaving zero
+        exactBalanceAccount.withdraw(100);
+        assertEquals(0, exactBalanceAccount.getBalance());
 
+        BankAccount pennyAccount = new BankAccount("penny@b.cc", 0.01); // Withdraw smallest valid positive amount
+        pennyAccount.withdraw(0.01);
+        assertEquals(0, pennyAccount.getBalance(), 0.0001);
+
+        BankAccount sequentialWithdrawAccount = new BankAccount("sequence@b.cc", 200); // Multiple valid withdraws ending at zero
+        sequentialWithdrawAccount.withdraw(99.99);
+        sequentialWithdrawAccount.withdraw(100.01);
+        assertEquals(0, sequentialWithdrawAccount.getBalance(), 0.0001);
+
+        // Zero and non-finite withdraw amounts equivalence class:
+        BankAccount zeroWithdrawAccount = new BankAccount("zero@b.cc", 50);
+        assertThrows(IllegalArgumentException.class, () -> zeroWithdrawAccount.withdraw(0)); // Zero not allowed
+
+        BankAccount nanWithdrawAccount = new BankAccount("nan@b.cc", 50);
+        assertThrows(IllegalArgumentException.class, () -> nanWithdrawAccount.withdraw(Double.NaN)); // NaN not allowed
+
+        BankAccount infinityWithdrawAccount = new BankAccount("inf@b.cc", 50);
+        assertThrows(IllegalArgumentException.class, () -> infinityWithdrawAccount.withdraw(Double.POSITIVE_INFINITY)); // Infinity not allowed
+
+        // Near-overdraft equivalence class:
+        BankAccount nearOverdraftAccount = new BankAccount("near@b.cc", 100);
+        assertThrows(InsufficientFundsException.class, () -> nearOverdraftAccount.withdraw(100.01)); // Over by smallest cent
     }
 
     @Test
