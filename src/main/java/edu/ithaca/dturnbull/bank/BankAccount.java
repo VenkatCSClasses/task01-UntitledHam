@@ -18,7 +18,7 @@ public class BankAccount {
             throw new IllegalArgumentException("Email address: " + email + " is invalid, cannot create account");
 
         }
-        if (!isAmountValid(startingBalance)) {
+        if (startingBalance != 0 && !isAmountValid(startingBalance)) {
             throw new IllegalArgumentException("Starting balance: " + startingBalance + " is invalid, cannot create account");
         }
 
