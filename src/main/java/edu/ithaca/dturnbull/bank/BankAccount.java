@@ -40,7 +40,11 @@ public class BankAccount {
      * @throws IllegalArgumentException if the amount is less than or equal to 0 and/or contains more than 2 decimal places.
      */
     public void deposit(double amount) throws IllegalArgumentException {
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException("Amount: " + amount + " is invalid, cannot deposit.");
+        }
 
+        this.balance += amount;
     }
 
     /***
@@ -50,8 +54,19 @@ public class BankAccount {
      * @throws IllegalArgumentException if the amount is less than or equal to 0 and/or contains more than 2 decimal places.
      * @throws InsufficientFundsException if there is not enough money in the account to transfer
      */
-    public void transfer(double amount, BankAccount otherAccount) throws IllegalArgumentException {
+    public void transfer(double amount, BankAccount otherAccount) throws IllegalArgumentException, InsufficientFundsException {
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException("Amount: " + amount + " is invalid, cannot transfer.");
+        }
 
+        if (balance - amount >= 0) {
+            balance -= amount;
+            otherAccount.deposit(amount);
+        }
+        else {
+            throw new InsufficientFundsException("Not enough money in account.");
+        }
+        
     }
 
 
