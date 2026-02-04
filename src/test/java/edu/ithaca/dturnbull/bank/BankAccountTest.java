@@ -206,4 +206,89 @@ class BankAccountTest {
         assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -100.555)); // Negative 3 decimal place (not allowed)
     }
 
+    @Test
+    void depositTest() {
+        // Positive deposits equivalence class:
+        BankAccount depositAccount = new BankAccount("deposit@b.cc", 0); // Deposit positive amount
+        depositAccount.deposit(50);
+        assertEquals(50, depositAccount.getBalance());
+
+        depositAccount = new BankAccount("deposit@b.cc", 0); // Deposit positive 1 decimal amount
+        depositAccount.deposit(50.5);
+        assertEquals(50.5, depositAccount.getBalance());
+
+        depositAccount = new BankAccount("deposit@b.cc", 0); // Deposit positive 2 decimal amount
+        depositAccount.deposit(50.55);
+        assertEquals(50.55, depositAccount.getBalance());
+
+        BankAccount depositThreeDecimal = new BankAccount("deposit@b.cc", 0); // Deposit positive 3 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> depositThreeDecimal.deposit(50.555));
+
+        // Negative deposits equivalence class:
+        BankAccount depositNegativeWhole = new BankAccount("deposit@b.cc", 100); // Deposit negative amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> depositNegativeWhole.deposit(-50));
+
+        BankAccount depositNegativeOneDecimal = new BankAccount("deposit@b.cc", 100); // Deposit negative 1 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> depositNegativeOneDecimal.deposit(-50.1));
+
+        BankAccount depositNegativeTwoDecimal = new BankAccount("deposit@b.cc", 100); // Deposit negative 2 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> depositNegativeTwoDecimal.deposit(-50.11));
+
+        BankAccount depositNegativeThreeDecimal = new BankAccount("deposit@b.cc", 100); // Deposit negative 3 decimal amount (not allowed)
+        assertThrows(IllegalArgumentException.class, () -> depositNegativeThreeDecimal.deposit(-50.111));
+
+        // Zero deposit equivalence class:
+        BankAccount zeroDepositAccount = new BankAccount("deposit@b.cc", 25);
+        assertThrows(IllegalArgumentException.class, () -> zeroDepositAccount.deposit(0)); // Zero not allowed
+    }
+
+
+    @Test
+    void transferTest() throws InsufficientFundsException {
+        // Positive transfers equivalence class:
+        BankAccount transferAccount = new BankAccount("transfer@b.cc", 200); // Transfer positive amount
+        BankAccount receivingAccount = new BankAccount("receiver@b.cc", 50);
+        transferAccount.transfer(50, receivingAccount);
+        assertEquals(150, transferAccount.getBalance());
+        assertEquals(100, receivingAccount.getBalance());
+
+        transferAccount = new BankAccount("transfer@b.cc", 200); // Transfer positive 1 decimal amount
+        receivingAccount = new BankAccount("receiver@b.cc", 0);
+        transferAccount.transfer(50.5, receivingAccount);
+        assertEquals(149.5, transferAccount.getBalance());
+        assertEquals(50.5, receivingAccount.getBalance());
+
+        transferAccount = new BankAccount("transfer@b.cc", 200); // Transfer positive 2 decimal amount
+        receivingAccount = new BankAccount("receiver@b.cc", 0);
+        transferAccount.transfer(50.55, receivingAccount);
+        assertEquals(149.45, transferAccount.getBalance());
+        assertEquals(50.55, receivingAccount.getBalance());
+
+        BankAccount transferThreeDecimal = new BankAccount("transfer@b.cc", 200); // Transfer positive 3 decimal amount (not allowed)
+        BankAccount receiverThreeDecimal = new BankAccount("receiver@b.cc", 0);
+        assertThrows(IllegalArgumentException.class, () -> transferThreeDecimal.transfer(50.555, receiverThreeDecimal));
+
+        // Negative transfer equivalence class:
+        BankAccount transferNegativeWhole = new BankAccount("transfer@b.cc", 200);
+        BankAccount receivingNegativeWhole = new BankAccount("receiver@b.cc", 0);
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeWhole.transfer(-50, receivingNegativeWhole));
+
+        BankAccount transferNegativeOneDecimal = new BankAccount("transfer@b.cc", 200);
+        BankAccount receivingNegativeOneDecimal = new BankAccount("receiver@b.cc", 0);
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeOneDecimal.transfer(-50.1, receivingNegativeOneDecimal));
+
+        BankAccount transferNegativeTwoDecimal = new BankAccount("transfer@b.cc", 200);
+        BankAccount receivingNegativeTwoDecimal = new BankAccount("receiver@b.cc", 0);
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeTwoDecimal.transfer(-50.11, receivingNegativeTwoDecimal));
+
+        BankAccount transferNegativeThreeDecimal = new BankAccount("transfer@b.cc", 200);
+        BankAccount receivingNegativeThreeDecimal = new BankAccount("receiver@b.cc", 0);
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeThreeDecimal.transfer(-50.111, receivingNegativeThreeDecimal));
+
+        // Transferring too much equivalence class:
+        BankAccount transferOverdraft = new BankAccount("transfer@b.cc", 100);
+        BankAccount receivingOverdraft = new BankAccount("receiver@b.cc", 0);
+        assertThrows(InsufficientFundsException.class, () -> transferOverdraft.transfer(200, receivingOverdraft));
+    }
+
 }
