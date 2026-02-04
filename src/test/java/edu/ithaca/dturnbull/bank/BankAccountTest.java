@@ -269,24 +269,24 @@ class BankAccountTest {
         assertThrows(IllegalArgumentException.class, () -> transferThreeDecimal.transfer(50.555, receiverThreeDecimal));
 
         // Negative transfer equivalence class:
-        BankAccount transferNegativeWhole = new BankAccount("transfer@b.cc", 200);
+        BankAccount transferNegativeWhole = new BankAccount("transfer@b.cc", 200); // Transfer negative amount (not allowed)
         BankAccount receivingNegativeWhole = new BankAccount("receiver@b.cc", 0);
         assertThrows(IllegalArgumentException.class, () -> transferNegativeWhole.transfer(-50, receivingNegativeWhole));
 
         BankAccount transferNegativeOneDecimal = new BankAccount("transfer@b.cc", 200);
         BankAccount receivingNegativeOneDecimal = new BankAccount("receiver@b.cc", 0);
-        assertThrows(IllegalArgumentException.class, () -> transferNegativeOneDecimal.transfer(-50.1, receivingNegativeOneDecimal));
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeOneDecimal.transfer(-50.1, receivingNegativeOneDecimal)); // Transfer negative 1 decimal amount (not allowed)
 
         BankAccount transferNegativeTwoDecimal = new BankAccount("transfer@b.cc", 200);
         BankAccount receivingNegativeTwoDecimal = new BankAccount("receiver@b.cc", 0);
-        assertThrows(IllegalArgumentException.class, () -> transferNegativeTwoDecimal.transfer(-50.11, receivingNegativeTwoDecimal));
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeTwoDecimal.transfer(-50.11, receivingNegativeTwoDecimal)); // Transfer negative 2 decimal amount (not allowed)
 
         BankAccount transferNegativeThreeDecimal = new BankAccount("transfer@b.cc", 200);
         BankAccount receivingNegativeThreeDecimal = new BankAccount("receiver@b.cc", 0);
-        assertThrows(IllegalArgumentException.class, () -> transferNegativeThreeDecimal.transfer(-50.111, receivingNegativeThreeDecimal));
+        assertThrows(IllegalArgumentException.class, () -> transferNegativeThreeDecimal.transfer(-50.111, receivingNegativeThreeDecimal)); // Transfer negative 3 decimal amount (not allowed)
 
         // Transferring too much equivalence class:
-        BankAccount transferOverdraft = new BankAccount("transfer@b.cc", 100);
+        BankAccount transferOverdraft = new BankAccount("transfer@b.cc", 100); // Cannot transfer more than the bank account contains
         BankAccount receivingOverdraft = new BankAccount("receiver@b.cc", 0);
         assertThrows(InsufficientFundsException.class, () -> transferOverdraft.transfer(200, receivingOverdraft));
     }
