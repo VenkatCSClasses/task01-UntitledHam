@@ -7,11 +7,12 @@ public class BankAccount {
     private String email;
     private double balance;
 
+
     /**
-     * 
-     * @param email the email address for the account
-     * @param startingBalance the starting balance (must be postive and have less than or equal to 2 decimal places)
-     * @throws IllegalArgumentException if the email is invalid or if the starting balance is invalid (negative and/or 3 or more decimal places)
+     * Creates a BankAccount with the given info
+     * @param email the email associated with the account, must be valid according to RFC 5322
+     * @param startingBalance the balance the account starts with, must be greater than or equal to 0 and have 2 or less decimal places
+     * @throws IllegalArgumentException if email or starting balance is invalid. 
      */
     public BankAccount(String email, double startingBalance) throws IllegalArgumentException {
         if (!isEmailValid(email)){
@@ -26,13 +27,24 @@ public class BankAccount {
         this.balance = startingBalance;
     }
 
+
+    /**
+     * Returns the balance of the account
+     * @return the balance of the account
+     */
     public double getBalance(){
         return balance;
     }
 
+    
+    /**
+     * Returns the email address of the account
+     * @return the email address associated with the account
+     */
     public String getEmail(){
         return email;
     }
+
 
     /**
      * Deposits the given amount into this bankaccount
@@ -46,6 +58,7 @@ public class BankAccount {
 
         this.balance += amount;
     }
+
 
     /***
      * Transfers the given amount from this account to the provided other account
@@ -78,6 +91,7 @@ public class BankAccount {
     public static boolean isAmountValid(double amount) {
         return Double.isFinite(amount) && amount > 0 && BigDecimal.valueOf(amount).scale() <= 2;
     }
+
 
     /***
      * Withdraws the given amount from the bank account.
@@ -156,7 +170,4 @@ public class BankAccount {
 
         return true;
     }
-
-
-
 }
