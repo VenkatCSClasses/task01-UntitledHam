@@ -98,6 +98,11 @@ public class BankAccount {
     }
 
 
+    /**
+     * Returns whether the email is valid or not based on the RFC 5322 spec
+     * @param email the email address to test if valid
+     * @return a boolean indicating if the email is valid or not
+     */
     public static boolean isEmailValid(String email) {
         if (email == null || email.isEmpty()) return false;
 
